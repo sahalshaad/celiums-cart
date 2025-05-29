@@ -1,4 +1,4 @@
-from pyexpat.errors import messages
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from .forms import RegistrationForm
 from .models import Account
@@ -16,7 +16,7 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone = phone
             user.save()
-            messages.success("registration is success")
+            messages.success(request, "registration is success")
             return redirect ('register')
     else:
         form = RegistrationForm()
