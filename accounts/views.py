@@ -1,4 +1,4 @@
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.shortcuts import redirect, render
 from .forms import RegistrationForm
 from .models import Account
@@ -32,8 +32,14 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         
-        user = auth.authenticate(email)
-    
+        user = auth.authenticate(email=email, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request,'you are now loged in')
+            return redirect ('home')
+        else:
+            messages.error(request, 'invalid login creadentioal')
+            return redirect ('login')
     return render (request, 'accounts/login.html')
 
 def logout(request):
