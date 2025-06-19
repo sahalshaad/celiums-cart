@@ -2,6 +2,8 @@ from django.contrib import messages, auth
 from django.shortcuts import redirect, render
 from .forms import RegistrationForm
 from .models import Account
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -18,6 +20,12 @@ def register(request):
             user = Account.objects.create_user (first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone = phone
             user.save()
+            
+            # USER ACTIVATION
+            current_site = get_current_site(request)
+            mail_subject = 'Please Activate Your Account'
+            message = render_to_string('accounts/account_activation_email.html')
+            
             messages.success(request, "registration is success")
             return redirect ('register')
     else:
@@ -44,5 +52,10 @@ def user_login(request):
             return redirect ('user_login')
     return render (request, 'accounts/login.html')
 
+
+
+@login_required(login_url='user_login')
 def logout(request):
-    return render (request, 'accounts/logout.html')
+    auth.logout(request)
+    messages.success(request, 'You are logged out')
+    return redirect('user_login')
