@@ -104,7 +104,15 @@ def user_login(request):
             auth.login(request, user)
             messages.success(request, 'You are now logged in')
             url = request.META.get('HTTP_REFERER')
-            return redirect('dashboard')
+            try:
+                query = requests.utils.urlparse(url).query
+                # query-> next=/cart/checkout/
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+            except:
+                return redirect('dashboard')
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('user_login')
