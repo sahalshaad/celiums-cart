@@ -166,3 +166,5 @@ EMAIL_HOST_PASSWORD = 'getxkzknregachqk' # Use app password if using Gmail with 
 
 
 
+RAZORPAY_KEY_ID = 'rzp_test_Yh8naWL1XAQOv1'
+RAZORPAY_KEY_SECRET = 'R29tgZvYUxZpJTJRkWwP8fLY'

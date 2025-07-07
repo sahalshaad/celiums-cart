@@ -45,6 +45,8 @@ class Order(models.Model):
     is_orderd      = models.BooleanField(default=False)
     created_at     = models.DateTimeField(auto_now_add=True)
     updated_at     = models.DateTimeField(auto_now_add=True)
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+
     
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
